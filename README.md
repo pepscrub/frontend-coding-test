@@ -28,18 +28,20 @@ See how the real functionality works by visiting [lens.org](https://lens.org) an
 
 ## Submitting your solution
 
-Please push your solution to a github repository.
+Please create your own github repository and push this solution to it.
 
-Ideally, create an initial commit of the supplied code on main, then submit your changes as a Pull Request.
+Ideally, create an initial commit of this supplied code on main, then submit your changes as a Pull Request.
 
 If you'd prefer the repository to remain private, invite @simon-lang as a collaborator when you're ready for me to review.
 
 
 ## What we are looking for
 
-Write a story with interaction tests that show how the functionality works. Do not worry about browser navigation (e.g. useQueryParams)
+Write a story with interaction tests that show how the functionality works.
 
 Your implementation does NOT need to be fully comparable to the versions on lens.org in either functionality or design.
+
+Do not worry about browser navigation (e.g. useQueryParams) - it only needs to be visible through Storybook.
 
 If you choose to implement analysis functionality note that [recharts](https://recharts.org/en-US/) is already installed, but you don't necessarily need to use it.
 
