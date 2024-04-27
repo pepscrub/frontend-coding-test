@@ -1,51 +1,55 @@
+import { ANCHOR_STYLING } from '@/lib/constants';
 import { PatentDocument } from '@/models/PatentDocument';
 import { PatentEmojis } from '@/models/PatentLegalStatus';
-import { toTitleCase } from '@/utils';
+import { convertToHumanDate, toTitleCase } from '@/utils';
 import { FC } from 'react';
-import { ReactCountryFlag } from 'react-country-flag';
+import { useTranslation } from 'react-i18next';
+import { PatentBar } from './PatentBar';
+import { CitedInfo } from './PatentCited';
+import { PatentPills } from './PatentPills';
 
 
 interface Props {
   patent: PatentDocument;
 }
 
-const PatentBar: FC<Props> = ({ patent }) => {
-  const { jurisdiction, doc_number, kind, publication_type, priority_claim, family } = patent;
-  // Removes duplicate jurisdictions from array
-  const jurisdictions = Array.from(new Set(priority_claim.map(({ jurisdiction }) => jurisdiction)));
-  // Ideally this would be a translation
-  const titleCasedPublication = toTitleCase(publication_type);
-  return (
-    <div className={'flex'}>
-      <div className={'mr-5 flex items-center'}>
-        <ReactCountryFlag countryCode={jurisdiction} svg />
-        <span className={'mx-0.5 ml-1'}>{doc_number}</span>
-        <span className={'mx-0.5'}>{kind}</span>
-      </div>
-      <div className={'mr-5'}>
-        <span className={'font-semibold'}>{titleCasedPublication}</span>
-      </div>
-      {/* Figure out what the family length means? */}
-      <div className={'mr-5'}>
-        Family: {family.simple.size}
-      </div>
-      <div className={'mr-5'}>
-        <span>Family Jurisdictions:</span>
-        <span className={'px-1'}>{jurisdictions.join(',')}</span>
-      </div>
-    </div>
-  )
-}
-
 const PatentInfo: FC<Props> = ({ patent }) => {
-  const { legal_status: legal } = patent;
+  const { t } = useTranslation()
+  const {
+    legal_status: legal,
+    doc_number,
+    date_published,
+    earliest_priority_claim_date,
+  } = patent;
+  // Add other dates once found out what they are (filed, granted, etc)
+  const displayDates = {
+    published: date_published,
+    earliest_priority: earliest_priority_claim_date,
+  }
+  const applicants = patent.applicant
+      .filter(({ app_type }) => app_type === 'applicant')
+      .map(({ name }) => toTitleCase(name))
+
+  const inventors = patent.inventor.map(({ name }) => toTitleCase(name))
   const legalStatus = legal.patent_status;
+
   return (
     <div>
       <PatentBar patent={patent} />
       <div>
-        Legal Status: <abbr title={legal.ipr_type}>{PatentEmojis[legalStatus]} {toTitleCase(legalStatus)}</abbr>
+        Legal Status: <a href='#' className={ANCHOR_STYLING}>{PatentEmojis[legalStatus]} {toTitleCase(legalStatus)}</a>
       </div>
+      <div>
+        <span className={'mr-2'}>{t('Application No:')} {doc_number}</span>
+        {Object.entries(displayDates).map(([key, value]) => (
+          <span className={'mr-2'}>{t(`${toTitleCase(key)}:`)} {convertToHumanDate(value)}</span>
+        ))}
+      </div>
+      {/* Need to make key for translation to append plurals */}
+      <div className={'capitalize'}>{t('Applicant', { count: applicants.length })}: {applicants.join(', ')}</div>
+      <div className={'capitalize'}>{t('Inventor', { count: inventors.length} )}: {inventors.join(', ')}</div>
+      <CitedInfo patent={patent} />
+      <span>{t('Additional Info: ')}</span><PatentPills doc={patent} />
     </div>
   )
 }
@@ -57,29 +61,6 @@ export function ViewPatent({ patent }: { patent: PatentDocument }) {
     <div className={'container mx-auto py-5'}>
       <h1 className={'text-xl mb-2'}>{patent.title?.en?.at(0)?.text || ''}</h1>
       <PatentInfo patent={patent} />
-      {/* <div>{patent.doc_key}</div>
-      <p className={'capitalize py-2'}>{patent.publication_type}</p>
-      <div className={'py-2'}>
-        <PatentPills doc={patent} />
-      </div>
-      <div>
-        {t('Published: ')} {patent.date_published || patent.year_published || 'unknown'}
-      </div>
-      <div>
-        {t('Jurisdiction: ')} {patent.jurisdiction}
-      </div>
-      <div>
-        {t('Applicants: ')}{' '}
-        {patent.applicant.map((applicant) => (
-          <small key={applicant.name}>{applicant.name} </small>
-        ))}
-      </div>
-      <div>
-        {t('Inventors: ')}
-        {patent.inventor.map((inventor) => (
-          <small key={inventor.name}>{inventor.name} </small>
-        ))}
-      </div> */}
       <pre className={'py-2'}>{JSON.stringify(patent, null, 2)}</pre>
     </div>
   )
