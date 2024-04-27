@@ -57,7 +57,6 @@ export function ViewPatent({ patent }: { patent: PatentDocument }) {
         <PatentPreview patent={patent} />
         <PatentImagePreview />
       </div>
-      <pre className={'py-2'}>{JSON.stringify(patent, null, 2)}</pre>
     </div>
   )
 }
