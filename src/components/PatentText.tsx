@@ -16,9 +16,9 @@ export const PatentAbstract: FC<{ abstract: Abstract }> = ({ abstract }) => {
   return (
     <>
       {abstract[locale]
-        ? <p>
+        ? <section>
             <AbstractText abstractInfo={abstract[locale]} startingText={<span className={'font-semibold'}>{t('Abstract match: ')}</span>} />
-          </p>
+          </section>
         : <p>{t('No abstract found')}</p>
       }
     </>
@@ -32,7 +32,8 @@ export const PatentPreview: FC<{ patent: PatentDocument }> = ({ patent }) => {
     {abstract && <>
       <h1 className={'font-bold'}>Abstract</h1>
       <AbstractText abstractInfo={abstract} />
-      {claimInfo?.map((text, i) => <p className={`pb-4 ${i === 0 ? 'pt-4' : ''}`}>{text}</p>)}
+      <h1 className={'font-bold mt-2'}>Claim</h1>
+      {claimInfo?.map((text, i) => <section className={`pb-4 ${i === 0 ? 'pt-4' : ''}`}>{text}</section>)}
     </>}
   </article>;
 }
