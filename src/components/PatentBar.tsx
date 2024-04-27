@@ -10,19 +10,19 @@ export const PatentBar: FC<{ patent: PatentDocument }> = ({ patent }) => {
   const titleCasedPublication = toTitleCase(publication_type);
   return (
     <div className={'flex flex-wrap'}>
-      <div className={'mr-5 flex items-center'}>
+      <div className={'mr-3 flex items-center'}>
         <ReactCountryFlag countryCode={jurisdiction} svg />
         <span className={'mx-0.5 ml-1'}>{doc_number}</span>
         <span className={'mx-0.5'}>{kind}</span>
       </div>
-      <div className={'mr-5'}>
+      <div className={'mr-3'}>
         <span className={'font-semibold capitalize'}>{titleCasedPublication}</span>
       </div>
       {/* Figure out what the family length means? */}
-      <div className={'mr-5'}>
+      <div className={'mr-3'}>
         Family: {family.simple.size}
       </div>
-      <div className={'mr-5'}>
+      <div className={'mr-3'}>
         <span>Family Jurisdictions:</span>
         <span className={'px-1'}>{jurisdictions.join(',')}</span>
       </div>
