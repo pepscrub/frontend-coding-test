@@ -4,16 +4,14 @@ import { PatentEmojis } from '@/models/PatentLegalStatus';
 import { convertToHumanDate, toTitleCase } from '@/utils';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ApplicantAndInventorInfo } from './PatentApplicantInventor';
 import { PatentBar } from './PatentBar';
 import { CitedInfo } from './PatentCited';
+import { PatentImagePreview } from './PatentImagePreview';
 import { PatentPills } from './PatentPills';
+import { PatentAbstract, PatentPreview, } from './PatentText';
 
-
-interface Props {
-  patent: PatentDocument;
-}
-
-const PatentInfo: FC<Props> = ({ patent }) => {
+const PatentInfo: FC<{patent: PatentDocument}> = ({ patent }) => {
   const { t } = useTranslation()
   const {
     legal_status: legal,
@@ -26,15 +24,9 @@ const PatentInfo: FC<Props> = ({ patent }) => {
     published: date_published,
     earliest_priority: earliest_priority_claim_date,
   }
-  const applicants = patent.applicant
-      .filter(({ app_type }) => app_type === 'applicant')
-      .map(({ name }) => toTitleCase(name))
-
-  const inventors = patent.inventor.map(({ name }) => toTitleCase(name))
   const legalStatus = legal.patent_status;
-
   return (
-    <div>
+    <div className={'mb-10'}>
       <PatentBar patent={patent} />
       <div>
         Legal Status: <a href='#' className={ANCHOR_STYLING}>{PatentEmojis[legalStatus]} {toTitleCase(legalStatus)}</a>
@@ -46,21 +38,25 @@ const PatentInfo: FC<Props> = ({ patent }) => {
         ))}
       </div>
       {/* Need to make key for translation to append plurals */}
-      <div className={'capitalize'}>{t('Applicant', { count: applicants.length })}: {applicants.join(', ')}</div>
-      <div className={'capitalize'}>{t('Inventor', { count: inventors.length} )}: {inventors.join(', ')}</div>
+      <ApplicantAndInventorInfo patent={patent} />
       <CitedInfo patent={patent} />
-      <span>{t('Additional Info: ')}</span><PatentPills doc={patent} />
+      <div className={'mb-3'}>{t('Additional Info: ')}<PatentPills doc={patent} /></div>
+      <PatentAbstract abstract={patent.abstract} />
+      {/* Extend for additional information like description once defined */}
     </div>
   )
 }
 
 
 export function ViewPatent({ patent }: { patent: PatentDocument }) {
-  // const { t } = useTranslation()
   return (
     <div className={'container mx-auto py-5'}>
       <h1 className={'text-xl mb-2'}>{patent.title?.en?.at(0)?.text || ''}</h1>
       <PatentInfo patent={patent} />
+      <div className='flex flex-column border-t border-neutral-300'>
+        <PatentPreview patent={patent} />
+        <PatentImagePreview />
+      </div>
       <pre className={'py-2'}>{JSON.stringify(patent, null, 2)}</pre>
     </div>
   )
