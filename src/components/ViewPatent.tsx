@@ -29,7 +29,7 @@ const PatentInfo: FC<{patent: PatentDocument}> = ({ patent }) => {
   const legalStatus = legal.patent_status;
 
   return (
-    <div className={'mb-10 text-gray-700'}>
+    <div className={'mb-10 text-gray-400'}>
       <PatentBar patent={patent} />
       <div className={'flex'}>
         {t('Legal Status')}:
