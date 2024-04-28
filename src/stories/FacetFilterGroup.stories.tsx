@@ -25,6 +25,7 @@ const meta: Meta<typeof Component> = {
   args: {
     aggregationTarget: 'jurisdiction',
     label: 'Inventor',
+    search: false,
     aggregation: AGGREGATIONS.aggregations,
   }
 }

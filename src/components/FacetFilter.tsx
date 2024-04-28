@@ -1,48 +1,47 @@
-import { Bucket } from '@/models/Bucket'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { TermsAggregation } from '../models/TermsAggregation'
-import { useFilter } from './FacetFilterGroup'
+import { ModifiedBucket, useFilter } from './FacetFilterController'
+import { Flag } from './Flag'
 import { Button } from './ui/Button'
 
-export interface FacetFilterGroupProps {
-  aggregation: TermsAggregation
-  label: string
-}
-
-export function FacetFilter({ aggregation }: { aggregation: TermsAggregation }) {
+export function FacetFilter() {
   const { t } = useTranslation();
-  const { updateFiltered } = useFilter();
+  const { searchResults } = useFilter();
   return (
     <div className={'p-2'}>
-      {aggregation?.buckets?.map((bucket,i) => {
-        return <FacetFilterItem key={`${bucket.key}-${i}`} bucket={bucket} />
-      })}
+      {searchResults.map((bucket,i) => <FacetFilterItem key={`${bucket.key}-${i}`} bucket={bucket} />)}
       <div className="flex py-2">
-        <Button size="sm" onClick={updateFiltered}>{t('Refine')}</Button>
+        <Button size="sm">{t('Refine')}</Button>
       </div>
     </div>
   )
 }
 
-export function FacetFilterItem({ bucket }: { bucket: Bucket }) {
-  const [checked, setChecked] = useState(false);
+export function FacetFilterItem({ bucket }: { bucket: ModifiedBucket }) {
+  const [checked, setChecked] = useState(bucket.checked);
   const { updateSelected } = useFilter();
+  const { t } = useTranslation();
+  const keyAsDate = new Date(bucket.key);
+  const isDate = !isNaN(keyAsDate.getDate());
 
-  // Disabled exhaustive deps due to infinite re-mounting on functions
+  const label = isDate ? bucket?.key_as_string : t(bucket.key.replace('_', ' '));
+
+  // Disabled exhaustive deps due to infinite re-mounting
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => updateSelected(bucket, checked), [bucket, checked]);
+  useEffect(() => updateSelected(bucket, checked), [checked]);
+  useEffect(() => setChecked(bucket.checked), [bucket]);
 
   return (
     <label
-      className="flex text-sm small cursor-pointer py-1 hover:bg-slate-100 dark:hover:bg-slate-900"
+      className="flex items-center text-sm small cursor-pointer py-1 hover:bg-slate-100 dark:hover:bg-slate-900"
       key={bucket.key}
     >
       <span className="mr-1">
-        <input type="checkbox" checked={checked} onChange={() => setChecked((check) => !check)} />
+        <input type="checkbox" checked={bucket.checked} onChange={() => setChecked(!checked)} />
       </span>
-      <span className="flex-1">{bucket.key.replace('_', ' ')}</span>
-      <span className="justify-self-end">({bucket.doc_count.toLocaleString()})</span>
+      <Flag countryCode={bucket.original_key} />
+      <span className="flex-1">{label}</span>
+      <span className="justify-self-end">({bucket.doc_count})</span>
     </label>
   )
 }

@@ -1,71 +1,44 @@
 import { Aggregation } from '@/models/Aggregation';
-import { Bucket } from '@/models/Bucket';
 import { TermsAggregation } from '@/models/TermsAggregation';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { FC, PropsWithChildren, createContext, useContext, useState } from 'react';
-import { FacetFilter, FacetFilterGroupProps } from './FacetFilter';
+import { useState } from 'react';
+import { FacetFilter } from './FacetFilter';
+import { FilterProvider, useFilter } from './FacetFilterController';
+import { Button } from './ui/Button';
+import { Input } from './ui/Input';
 
-interface Props extends PropsWithChildren {}
-
-interface StoryBookFacetFilterGroupProps {
+interface StoryBookFacetFilterGroupProps extends Omit<FacetFilterGroupProps, 'aggregation'> {
   aggregationTarget: string;
   aggregation: Record<string, Aggregation>;
+}
+
+export interface FacetFilterGroupProps {
+  aggregation: TermsAggregation
   label: string
+  search?: boolean;
+  searchText?: string;
 }
 
-interface Context {
-  filteredList: Bucket[];
-  selected: Bucket[];
-  updateFiltered: () => void;
-  updateSelected: (bucket: Bucket, checked: boolean) => void;
-}
 
-const context = createContext<Context | undefined>(undefined);
-
-const FilterProvider: FC<Props> = ({ children }) => {
-  const [selected, setSelected] = useState<Bucket[]>([]);
-  const [filteredList, setFilteredList] = useState<Bucket[]>([]);
-
-  const updateSelected = (bucket: Bucket, checked: boolean) => {
-    if(!checked) return setSelected((selectedList) => selectedList.filter(({ key }) => key !== bucket.key));
-    setSelected((selection) => [...selection, bucket])
-  }
-
-  const updateFiltered = () => {
-    setFilteredList(selected)
-  }
-
-  return (
-    <context.Provider
-      value={{
-        filteredList,
-        selected,
-        updateFiltered,
-        updateSelected,
-      }}
-    >
-      {children}
-    </context.Provider>
-  )
-}
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const useFilter = (): Context => {
-  const name = FilterProvider.name;
-  const data = useContext(context);
-  if (!data) throw new Error(`Missing ${name} in tree above ${name}`);
-  return data;
-}
-
-export function FacetFilterGroupModel({ aggregation, label }: FacetFilterGroupProps) {
-  const [show, setShow] = useState(true)
+export function FacetFilterGroupModel({ label, search: searchEnabled, searchText = 'Search' }: FacetFilterGroupProps) {
+  const [show, setShow] = useState(true);
+  const { setSearch, updateAllBuckets, searchList } = useFilter();
+  const allChecked = !searchList.every(({ checked }) => checked);
   // TODO: useScholar with aggregation enabled:show
   return (
     <div className="ml-2 border">
+      {searchEnabled 
+      && <Input
+          type="search"
+          onKeyUp={(e) => setSearch(e.currentTarget.value)}
+          placeholder={`${searchText} ${label}`}
+        />
+      }
+      <Button onClick={() => updateAllBuckets(allChecked)}>{ allChecked ? 'Select' : 'Deselect'} All</Button>
       <div className={'font-bold p-2 cursor-pointer'} onClick={() => setShow(!show)}>
         {label}
       </div>
-      {show && <FacetFilter aggregation={aggregation} />}
+      {show && <FacetFilter />}
     </div>
   )
 }
@@ -73,7 +46,7 @@ export function FacetFilterGroupModel({ aggregation, label }: FacetFilterGroupPr
 export function FacetFilterGroup(props: FacetFilterGroupProps) {
   return (
     <QueryClientProvider client={new QueryClient}>
-      <FilterProvider>
+      <FilterProvider buckets={props.aggregation.buckets} searchEnabled={props.search}>
         <FacetFilterGroupModel {...props} />
       </FilterProvider>
     </QueryClientProvider>
