@@ -1,6 +1,5 @@
-import { FacetAnalysis as Component } from '@/components/FacetAnalysis'
+import { SBFacetAnalysis as Component } from '@/components/FacetAnalysis'
 import { Meta, StoryObj } from '@storybook/react'
-
 import AGGREGATIONS from '../fixtures/patent-facets.json'
 
 type Story = StoryObj<typeof Component>
