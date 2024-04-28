@@ -3,14 +3,20 @@ import FuzzySearch from 'fuzzy-search';
 import { Dispatch, FC, PropsWithChildren, createContext, useCallback, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-interface Props extends PropsWithChildren {
-  buckets: Bucket[];
-  searchEnabled?: boolean;
-}
-
 export interface ModifiedBucket extends Bucket {
   checked: boolean;
   original_key: string;
+}
+
+// eslint-disable-next-line react-refresh/only-export-components
+export enum SELECTION_TYPE {
+  all,
+  current
+}
+
+interface Props extends PropsWithChildren {
+  buckets: Bucket[];
+  searchEnabled?: boolean;
 }
 
 interface Context {
@@ -20,7 +26,9 @@ interface Context {
   searchResults: ModifiedBucket[];
   updateAllBuckets: (checked?: boolean) => void;
   setSearch: Dispatch<string>;
+  selectionType: SELECTION_TYPE
   updateSelected: (bucket: ModifiedBucket, checked: boolean) => void;
+  setSelectionType: (selectionType: SELECTION_TYPE) => void;
 }
 
 const context = createContext<Context | undefined>(undefined);
@@ -29,6 +37,7 @@ const context = createContext<Context | undefined>(undefined);
 export const FilterProvider: FC<Props> = ({ buckets, children, searchEnabled }) => {
   const { t } = useTranslation();
   const [search, setSearch] = useState('');
+  const [selectionType, setSelectionType] = useState(SELECTION_TYPE.all);
 
   const translateBucket = useCallback(({ key, doc_count }: Bucket) => ({ key: t(key), original_key: key, doc_count, checked: false }), [t])
   const sortBucket = (a: ModifiedBucket, b: ModifiedBucket) => {
@@ -44,12 +53,24 @@ export const FilterProvider: FC<Props> = ({ buckets, children, searchEnabled }) 
   const [searchResults, setSearchResults] = useState<ModifiedBucket[]>([])
 
   const updateSelected = (bucket: ModifiedBucket, checked: boolean): void => {
-    const updatedList = [...searchResults.filter(({ key }) => key !== bucket.key), { ...bucket, checked }].sort(sortBucket);
+    const updatedList = [...searchList.filter(({ key }) => key !== bucket.key), { ...bucket, checked }].sort(sortBucket);
     setSearchList(updatedList.sort(sortBucket));
   }
 
   const updateAllBuckets = (checked: boolean = true) => {
-    setSearchList((searchResults) => searchResults.map((bucket) => ({ ...bucket, checked })));
+    switch (selectionType) {
+      case SELECTION_TYPE.all: {
+        setSearchList((searchResults) => searchResults.map((bucket) => ({ ...bucket, checked })))
+        break;
+      }
+      case SELECTION_TYPE.current: {
+        setSearchResults((searchResults) => searchResults.map((bucket) => ({ ...bucket, checked })));
+        break;
+      }
+      default: {
+        setSearchList((searchResults) => searchResults.map((bucket) => ({ ...bucket, checked })))
+      }
+    }
   }
 
   useEffect(() => {
@@ -71,6 +92,8 @@ export const FilterProvider: FC<Props> = ({ buckets, children, searchEnabled }) 
         searchResults,
         updateAllBuckets,
         setSearch,
+        selectionType,
+        setSelectionType,
         updateSelected,
       }}
     >

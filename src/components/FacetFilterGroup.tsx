@@ -1,9 +1,9 @@
 import { Aggregation } from '@/models/Aggregation';
 import { TermsAggregation } from '@/models/TermsAggregation';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { FacetFilter } from './FacetFilter';
-import { FilterProvider, useFilter } from './FacetFilterController';
+import { FilterProvider, SELECTION_TYPE, useFilter } from './FacetFilterController';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 
@@ -19,22 +19,41 @@ export interface FacetFilterGroupProps {
   searchText?: string;
 }
 
+const RadioButton: FC<{ selectionType: SELECTION_TYPE; label: string }> = ({ selectionType: selection, label }) => {
+  const { selectionType, setSelectionType } = useFilter();
+  return (
+    <>
+      <Input className={'mr-2'} checked={selectionType === selection} onChange={() => setSelectionType(selection)} type="radio" style={{ width: '1rem' }} />
+      <label className={'mr-3'}>{label}</label>
+    </>
+  )
+}
 
 export function FacetFilterGroupModel({ label, search: searchEnabled, searchText = 'Search' }: FacetFilterGroupProps) {
   const [show, setShow] = useState(true);
-  const { setSearch, updateAllBuckets, searchList } = useFilter();
+  const { search, setSearch, updateAllBuckets, searchList } = useFilter();
   const allChecked = !searchList.every(({ checked }) => checked);
   // TODO: useScholar with aggregation enabled:show
   return (
     <div className="ml-2 border">
       {searchEnabled 
       && <Input
-          type="search"
-          onKeyUp={(e) => setSearch(e.currentTarget.value)}
-          placeholder={`${searchText} ${label}`}
-        />
+        type="search"
+        onKeyUp={(e) => setSearch(e.currentTarget.value)}
+        placeholder={`${searchText} ${label}`}
+      />
       }
-      <Button onClick={() => updateAllBuckets(allChecked)}>{ allChecked ? 'Select' : 'Deselect'} All</Button>
+      <div className={'flex justify-between'}>
+        <div className={'flex items-center'}>
+          {!!search.trim().length
+            && <>
+              <RadioButton selectionType={SELECTION_TYPE.current} label="Select Current Results" />
+              <RadioButton selectionType={SELECTION_TYPE.all} label="All Documents" />
+            </>
+          }
+        </div>
+        <Button onClick={() => updateAllBuckets(allChecked)}>{ allChecked ? 'Select' : 'Deselect'} All</Button>
+      </div>
       <div className={'font-bold p-2 cursor-pointer'} onClick={() => setShow(!show)}>
         {label}
       </div>
