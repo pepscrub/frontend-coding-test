@@ -22,7 +22,7 @@ export function FacetFilterItem({ bucket }: { bucket: ModifiedBucket }) {
   const [checked, setChecked] = useState(bucket.checked);
   const { updateSelected, setIsDate } = useFilter();
   const { t } = useTranslation();
-  const keyAsDate = new Date(bucket.original_key);
+  const keyAsDate = new Date(bucket.original_key as number);
   const isDate = !isNaN(keyAsDate.getDate());
   setIsDate(isDate);
 
