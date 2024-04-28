@@ -19,9 +19,14 @@ export const FacetAnalysis: FC<Props> = ({ aggregation, hint, title }) => {
 
   return (
     <div>
-      {title && <h1 className={'text-2xl'}>{title}</h1>}
-      <ResponsiveContainer className={"my-6"} width={resetContainer} height={resetContainer}>
+      {title && <h1 aria-label="bar-chart-title" className={'text-2xl'}>{title}</h1>}
+      <ResponsiveContainer
+        className={"my-6"}
+        width={resetContainer}
+        height={resetContainer}
+      >
         <BarChart
+          aria-label="bar-chart"
           width={600}
           height={600}
           data={data}
@@ -54,7 +59,7 @@ export const FacetAnalysis: FC<Props> = ({ aggregation, hint, title }) => {
           <YAxis />
         </BarChart>
       </ResponsiveContainer>
-      {hint && <h3 className={'text-xl text-center'}>{hint}</h3>}
+      {hint && <h3 aria-label="bar-chart-hint" className={'text-xl text-center'}>{hint}</h3>}
     </div>
   )
 }
