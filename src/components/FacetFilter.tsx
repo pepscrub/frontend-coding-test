@@ -39,7 +39,7 @@ export function FacetFilterItem({ bucket }: { bucket: ModifiedBucket }) {
       key={bucket.key}
     >
       <span className="mr-1">
-        <input type="checkbox" checked={bucket.checked} onChange={() => setChecked(!checked)} />
+        <input aria-label={bucket.key} type="checkbox" checked={bucket.checked} onChange={() => setChecked(!checked)} />
       </span>
       <Flag countryCode={bucket.original_key as string} />
       <span className="flex-1">{label}</span>

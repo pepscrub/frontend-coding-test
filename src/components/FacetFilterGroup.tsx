@@ -23,7 +23,14 @@ const RadioButton: FC<{ selectionType: SELECTION_TYPE; label: string }> = ({ sel
   const { selectionType, setSelectionType } = useFilter();
   return (
     <>
-      <Input className={'mr-2'} checked={selectionType === selection} onChange={() => setSelectionType(selection)} type="radio" style={{ width: '1rem' }} />
+      <Input
+        aria-label={`facet-selection-type-${selection.toString()}`}
+        checked={selectionType === selection}
+        className={'mr-2'}
+        onChange={() => setSelectionType(selection)}
+        style={{ width: '1rem' }}
+        type="radio"
+      />
       <label className={'mr-3'}>{label}</label>
     </>
   )
@@ -40,7 +47,7 @@ export function FacetFilterGroupModel({ label, search: searchEnabled, searchText
       && <Input
         className={'mb-2'}
         type="search"
-        onKeyUp={(e) => setSearch(e.currentTarget.value)}
+        onChange={(e) => setSearch(e.currentTarget.value)}
         placeholder={`${searchText} ${label}`}
       />
       }
@@ -53,8 +60,8 @@ export function FacetFilterGroupModel({ label, search: searchEnabled, searchText
             </>
           }
         </div>
-        <Button onClick={() => updateAllBuckets(allChecked)}>{ allChecked ? 'Select' : 'Deselect'} All</Button>
-      </div>
+        <Button aria-label="facet-select-all" onClick={() => updateAllBuckets(allChecked)}>{ allChecked ? 'Select' : 'Deselect'} All</Button>
+      </div> 
       <div className={'font-bold p-2 cursor-pointer'} onClick={() => setShow(!show)}>
         {label}
       </div>

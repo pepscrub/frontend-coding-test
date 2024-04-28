@@ -65,9 +65,11 @@ export const FilterProvider: FC<Props> = ({ buckets, children, searchEnabled }) 
   }
 
   const updateAllBuckets = (checked: boolean = true) => {
+    const updateAll = () => setSearchList((searchResults) => searchResults.map((bucket) => ({ ...bucket, checked })))
+    if (search.trim() === '') return updateAll()
     switch (selectionType) {
       case SELECTION_TYPE.all: {
-        setSearchList((searchResults) => searchResults.map((bucket) => ({ ...bucket, checked })))
+        updateAll()
         break;
       }
       case SELECTION_TYPE.current: {
@@ -75,7 +77,7 @@ export const FilterProvider: FC<Props> = ({ buckets, children, searchEnabled }) 
         break;
       }
       default: {
-        setSearchList((searchResults) => searchResults.map((bucket) => ({ ...bucket, checked })))
+        updateAll()
       }
     }
   }
