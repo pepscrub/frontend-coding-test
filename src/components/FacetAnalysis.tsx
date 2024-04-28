@@ -1,6 +1,6 @@
 import { Aggregation } from "@/models/Aggregation";
 import { FC, useEffect, useState } from "react";
-import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { DarkModeController, useDarkMode } from "./DarkModeController";
 
 interface Props {
@@ -32,9 +32,6 @@ export const FacetAnalysis: FC<Props> = ({ aggregation, hint, title }) => {
             bottom: 5,
           }}
         >
-          <Bar dataKey="doc_count" fill="#0099a5" />
-          <XAxis dataKey="name" />
-          <YAxis />
           <Tooltip
             content={({ payload, label }) => (
               <div className="recharts-custom-tooltip p-2" style={{ backgroundColor }}>
@@ -52,6 +49,9 @@ export const FacetAnalysis: FC<Props> = ({ aggregation, hint, title }) => {
               </div>
             )}
           />
+          <Bar dataKey="doc_count" fill="#0099a5" activeBar={<Rectangle fill="#0099a5" stroke={backgroundColor} />} />
+          <XAxis dataKey="name" />
+          <YAxis />
         </BarChart>
       </ResponsiveContainer>
       {hint && <h3 className={'text-xl text-center'}>{hint}</h3>}
