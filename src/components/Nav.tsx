@@ -1,13 +1,12 @@
-import { Link, useQueryParams } from 'raviger'
-import { useTheme } from '@/components/ThemeProvider'
-import { theme as colors } from '@/theme'
-import { ModeToggle } from './DarkModeToggle'
+import { Link, useQueryParams } from 'raviger';
+import { FC } from 'react';
+import { DarkModeController, useDarkMode } from './DarkModeController';
+import { ModeToggle } from './DarkModeToggle';
+
 
 export function Nav() {
   const [{ q }] = useQueryParams()
-  const { theme, systemTheme } = useTheme()
-  const isDark = theme === 'dark' || (theme === 'system' && systemTheme === 'dark')
-  const backgroundColor = isDark ? '#171e25' : '#1f2f40' // TODO: system?
+  const { backgroundColor } = useDarkMode();
   return (
     <nav className={'text-white flex p-1'} style={{ backgroundColor }}>
       <Link className={'p-4 py-2'} href={'/'}>
@@ -27,3 +26,10 @@ export function Nav() {
     </nav>
   )
 }
+
+
+export const StoryBookNav: FC = () => (
+  <DarkModeController>
+    <Nav />
+  </DarkModeController>
+)

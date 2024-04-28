@@ -1,4 +1,4 @@
-import { Nav as Component } from '@/components/Nav'
+import { StoryBookNav as Component } from '@/components/Nav'
 import { Meta, StoryObj } from '@storybook/react'
 
 type Story = StoryObj<typeof Component>
