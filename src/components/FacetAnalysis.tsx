@@ -1,4 +1,5 @@
 import { Aggregation } from "@/models/Aggregation";
+import { theme } from "@/theme";
 import { FC, useEffect, useState } from "react";
 import { Bar, BarChart, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { DarkModeController, useDarkMode } from "./DarkModeController";
@@ -54,7 +55,7 @@ export const FacetAnalysis: FC<Props> = ({ aggregation, hint, title }) => {
               </div>
             )}
           />
-          <Bar dataKey="doc_count" fill="#0099a5" activeBar={<Rectangle fill="#0099a5" stroke={backgroundColor} />} />
+          <Bar dataKey="doc_count" fill={theme.brand} activeBar={<Rectangle fill={theme.brand} stroke={backgroundColor} />} />
           <XAxis dataKey="name" />
           <YAxis />
         </BarChart>
