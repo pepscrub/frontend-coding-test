@@ -1,6 +1,6 @@
 import { ANCHOR_STYLING } from '@/lib/constants';
 import { PatentDocument } from '@/models/PatentDocument';
-import { PatentEmojis } from '@/models/PatentLegalStatus';
+import { patentLegalColors } from '@/theme';
 import { convertToHumanDate, toTitleCase } from '@/utils';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,8 +28,15 @@ const PatentInfo: FC<{patent: PatentDocument}> = ({ patent }) => {
   return (
     <div className={'mb-10'}>
       <PatentBar patent={patent} />
-      <div>
-        Legal Status: <a href='#' className={ANCHOR_STYLING}>{PatentEmojis[legalStatus]} {toTitleCase(legalStatus)}</a>
+      <div className={'flex'}>
+        Legal Status:
+        <a href='#' className={`${ANCHOR_STYLING} flex items-center`}>
+          <span
+            className={'inline-block w-4 h-4 bg-gray-500 rounded-full mx-0.5'}
+            style={{ backgroundColor: patentLegalColors[legalStatus] }}
+          />
+          {toTitleCase(legalStatus)}
+        </a>
       </div>
       <div>
         <span className={'mr-2'}>{t('Application No:')} {doc_number}</span>
