@@ -15,7 +15,7 @@ const mergeResponses = (a: any, b: any) => ({
   aggregations: b.aggregations
 })
 
-export const getTestPatent = () => PATENTS_RESPONSE.hits[0] as unknown as PatentHit
+export const getTestPatent = (index: number = 0) => PATENTS_RESPONSE.hits[index] as unknown as PatentHit
 export const getTestScholarlyWork = () => SCHOLAR_RESPONSE.hits[0] as unknown as ScholarHit
 
 export const getScholarSearchHandler = () =>

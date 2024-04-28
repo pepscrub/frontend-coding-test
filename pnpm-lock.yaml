@@ -20,6 +20,12 @@ importers:
       clsx:
         specifier: ^2.1.0
         version: 2.1.1
+      i18next-browser-languagedetector:
+        specifier: ^7.2.1
+        version: 7.2.1
+      i18next-http-backend:
+        specifier: ^2.5.1
+        version: 2.5.1
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -112,7 +118,7 @@ importers:
         specifier: ^7.0.0
         version: 7.0.0
       i18next:
-        specifier: ^23.11.1
+        specifier: ^23.11.2
         version: 23.11.2
       lodash:
         specifier: ^4.17.21
@@ -133,7 +139,7 @@ importers:
         specifier: ^4.1.2
         version: 4.1.2(react@18.3.1)
       react-i18next:
-        specifier: ^14.1.0
+        specifier: ^14.1.1
         version: 14.1.1(i18next@23.11.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       recharts:
         specifier: ^2.12.5
@@ -141,6 +147,9 @@ importers:
       storybook:
         specifier: ^8.0.6
         version: 8.0.9(@babel/preset-env@7.24.4(@babel/core@7.24.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      storybook-react-i18next:
+        specifier: ^3.0.1
+        version: 3.0.1(i18next-browser-languagedetector@7.2.1)(i18next-http-backend@2.5.1)(i18next@23.11.2)(react-i18next@14.1.1(i18next@23.11.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       tailwindcss:
         specifier: ^3.4.3
         version: 3.4.3
@@ -2375,6 +2384,9 @@ packages:
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
 
+  cross-fetch@4.0.0:
+    resolution: {integrity: sha512-e4a5N8lVvuLgAWgnCrLr2PP0YyDOTHa9H/Rj54dirp61qXnNq46m82bRhNqIA5VccJtWBvPTFRV3TtvHUKPB1g==}
+
   cross-spawn@7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
     engines: {node: '>= 8'}
@@ -3046,6 +3058,12 @@ packages:
   human-signals@5.0.0:
     resolution: {integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==}
     engines: {node: '>=16.17.0'}
+
+  i18next-browser-languagedetector@7.2.1:
+    resolution: {integrity: sha512-h/pM34bcH6tbz8WgGXcmWauNpQupCGr25XPp9cZwZInR9XHSjIFDYp1SIok7zSPsTOMxdvuLyu86V+g2Kycnfw==}
+
+  i18next-http-backend@2.5.1:
+    resolution: {integrity: sha512-+rNX1tghdVxdfjfPt0bI1sNg5ahGW9kA7OboG7b4t03Fp69NdDlRIze6yXhIbN8rbHxJ8IP4dzRm/okZ15lkQg==}
 
   i18next@23.11.2:
     resolution: {integrity: sha512-qMBm7+qT8jdpmmDw/kQD16VpmkL9BdL+XNAK5MNbNFaf1iQQq35ZbPrSlqmnNPOSUY4m342+c0t0evinF5l7sA==}
@@ -4263,6 +4281,17 @@ packages:
 
   store2@2.14.3:
     resolution: {integrity: sha512-4QcZ+yx7nzEFiV4BMLnr/pRa5HYzNITX2ri0Zh6sT9EyQHbBHacC6YigllUPU9X3D0f/22QCgfokpKs52YRrUg==}
+
+  storybook-i18n@3.0.1:
+    resolution: {integrity: sha512-euCfw6ABqq8jSZ4fCaAIsNwk1FBIrSIr4kMP900bjUgO/mGgzZzXmrYmZaXs51mx9A2p87xo0OktPPZUuKYCTQ==}
+
+  storybook-react-i18next@3.0.1:
+    resolution: {integrity: sha512-zv8RkhNJdY51cXOuc3v0bCcQn0Gh8i8S9yunMXEloqaeF5rbHpPJz1jgFDvNhbUhQPWKm0qbcn8ir0/tKYvfXg==}
+    peerDependencies:
+      i18next: ^22.0.0 || ^23.0.0 || ^24.0.0
+      i18next-browser-languagedetector: ^7.0.0
+      i18next-http-backend: ^2.0.0
+      react-i18next: ^12.0.0 || ^13.0.0 || ^14.0.0
 
   storybook@8.0.9:
     resolution: {integrity: sha512-/Mvij0Br5bUwJpCvqAUZMEDIWmdRxEyllvVj8Ukw5lIWJePxfpSsz4px5jg9+R6B9tO8sQSqjg4HJvQ/pZk8Tg==}
@@ -7526,6 +7555,12 @@ snapshots:
 
   core-util-is@1.0.3: {}
 
+  cross-fetch@4.0.0:
+    dependencies:
+      node-fetch: 2.7.0
+    transitivePeerDependencies:
+      - encoding
+
   cross-spawn@7.0.3:
     dependencies:
       path-key: 3.1.1
@@ -8295,6 +8330,16 @@ snapshots:
   human-signals@2.1.0: {}
 
   human-signals@5.0.0: {}
+
+  i18next-browser-languagedetector@7.2.1:
+    dependencies:
+      '@babel/runtime': 7.24.4
+
+  i18next-http-backend@2.5.1:
+    dependencies:
+      cross-fetch: 4.0.0
+    transitivePeerDependencies:
+      - encoding
 
   i18next@23.11.2:
     dependencies:
@@ -9489,6 +9534,16 @@ snapshots:
       internal-slot: 1.0.7
 
   store2@2.14.3: {}
+
+  storybook-i18n@3.0.1: {}
+
+  storybook-react-i18next@3.0.1(i18next-browser-languagedetector@7.2.1)(i18next-http-backend@2.5.1)(i18next@23.11.2)(react-i18next@14.1.1(i18next@23.11.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)):
+    dependencies:
+      i18next: 23.11.2
+      i18next-browser-languagedetector: 7.2.1
+      i18next-http-backend: 2.5.1
+      react-i18next: 14.1.1(i18next@23.11.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      storybook-i18n: 3.0.1
 
   storybook@8.0.9(@babel/preset-env@7.24.4(@babel/core@7.24.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:

@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 const locale = new Intl.Locale(navigator.language).language as keyof Abstract;
 
 const AbstractText: FC<{ abstractInfo?: En[]; startingText?: ReactNode }> = ({ abstractInfo, startingText }) => {
-  return <>{abstractInfo?.map(({ text }, i) => <p>{i === 0 && startingText}{text}</p>)}</>
+  return <>{abstractInfo?.map(({ text }, i) => <p key={`abstract-paragraph-${i}`} >{i === 0 && startingText}{text}</p>)}</>
 }
 
 export const PatentAbstract: FC<{ abstract: Abstract }> = ({ abstract }) => {
@@ -32,8 +32,10 @@ export const PatentPreview: FC<{ patent: PatentDocument }> = ({ patent }) => {
     {abstract && <>
       <h1 className={'font-bold'}>Abstract</h1>
       <AbstractText abstractInfo={abstract} />
+    </>}
+    {claimInfo && <>
       <h1 className={'font-bold mt-2'}>Claim</h1>
-      {claimInfo?.map((text, i) => <section className={`pb-4 ${i === 0 ? 'pt-4' : ''}`}>{text}</section>)}
+      {claimInfo?.map((text, i) => <section key={`claim-item-${i}`} className={`pb-4 ${i === 0 ? 'pt-4' : ''}`}>{text}</section>)}
     </>}
   </article>;
 }

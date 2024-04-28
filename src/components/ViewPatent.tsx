@@ -20,10 +20,12 @@ const PatentInfo: FC<{patent: PatentDocument}> = ({ patent }) => {
     earliest_priority_claim_date,
   } = patent;
   // Add other dates once found out what they are (filed, granted, etc)
+
   const displayDates = {
     published: date_published,
     earliest_priority: earliest_priority_claim_date,
   }
+
   const legalStatus = legal.patent_status;
   return (
     <div className={'mb-10'}>
@@ -39,9 +41,11 @@ const PatentInfo: FC<{patent: PatentDocument}> = ({ patent }) => {
         </a>
       </div>
       <div>
-        <span className={'mr-2'}>{t('Application No:')} {doc_number}</span>
-        {Object.entries(displayDates).map(([key, value]) => (
-          <span className={'mr-2'}>{t(`${toTitleCase(key)}:`)} {convertToHumanDate(value)}</span>
+        <span className={'mr-2'}>{t('Application No')}: {doc_number}</span>
+        {Object.entries(displayDates).map(([key, value], i) => (
+          <span key={`patent-dates-${i}`} className={'mr-2'}>
+            {t(`${toTitleCase(key)}`)}: {convertToHumanDate(value)}
+          </span>
         ))}
       </div>
       {/* Need to make key for translation to append plurals */}

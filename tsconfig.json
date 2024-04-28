@@ -28,6 +28,6 @@
       ]
     }
   },
-  "include": ["src"],
+  "include": ["src", ".storybook/i18next.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

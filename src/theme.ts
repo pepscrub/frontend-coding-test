@@ -67,7 +67,7 @@ export const scholarPillColors = {
 
 export const patentLegalColors = {
   'ACTIVE': red,
-  'DISCONTINUED': gray,
+  'DISCONTINUED': gray[500],
   'EXPIRED': blue,
   'INACTIVE': white,
   'PATENTED': green,

@@ -1,7 +1,7 @@
 import { ANCHOR_STYLING } from "@/lib/constants";
 import { PatentDocument } from "@/models/PatentDocument";
 import { toTitleCase } from "@/utils";
-import { FC } from "react";
+import { FC, Fragment } from "react";
 
 export const CitedInfo: FC<{ patent: PatentDocument }> = ({ patent }) => {
   const displayData = {
@@ -11,8 +11,8 @@ export const CitedInfo: FC<{ patent: PatentDocument }> = ({ patent }) => {
   };
   return (
     <div>
-      {Object.entries(displayData).map(([key, value]) => (
-        <>{!!value && <a href='#' className={ANCHOR_STYLING + ' mr-5'}>{toTitleCase(key)}: {value}</a>}</>
+      {Object.entries(displayData).map(([key, value], i) => (
+        <Fragment key={`${key}-${i}`}>{!!value && <a href='#' className={ANCHOR_STYLING + ' mr-5'}>{toTitleCase(key)}: {value}</a>}</Fragment>
       ))}
     </div>
   );
