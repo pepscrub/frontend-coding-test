@@ -1,11 +1,11 @@
 import { Bucket } from "@/models/Bucket";
 import FuzzySearch from 'fuzzy-search';
-import { Dispatch, FC, PropsWithChildren, createContext, useCallback, useContext, useEffect, useState } from "react";
+import { FC, PropsWithChildren, createContext, useCallback, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export interface ModifiedBucket extends Bucket {
   checked: boolean;
-  original_key: string;
+  original_key: unknown;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -24,11 +24,12 @@ interface Context {
   searchEnabled?: boolean;
   searchList: ModifiedBucket[];
   searchResults: ModifiedBucket[];
-  updateAllBuckets: (checked?: boolean) => void;
-  setSearch: Dispatch<string>;
   selectionType: SELECTION_TYPE
-  updateSelected: (bucket: ModifiedBucket, checked: boolean) => void;
+  setIsDate: (isDate: boolean) => void;
+  setSearch: (search: string) => void;
   setSelectionType: (selectionType: SELECTION_TYPE) => void;
+  updateAllBuckets: (checked?: boolean) => void;
+  updateSelected: (bucket: ModifiedBucket, checked: boolean) => void;
 }
 
 const context = createContext<Context | undefined>(undefined);
@@ -37,6 +38,7 @@ const context = createContext<Context | undefined>(undefined);
 export const FilterProvider: FC<Props> = ({ buckets, children, searchEnabled }) => {
   const { t } = useTranslation();
   const [search, setSearch] = useState('');
+  const [isDate, setIsDate] = useState(false);
   const [selectionType, setSelectionType] = useState(SELECTION_TYPE.all);
 
   const translateBucket = useCallback(
@@ -48,6 +50,7 @@ export const FilterProvider: FC<Props> = ({ buckets, children, searchEnabled }) 
     const desc = b.doc_count - a.doc_count;
     const aText = a.key.toLowerCase();
     const bText = b.key.toLowerCase();
+    if(isDate) return b.original_key as number - (a.original_key as number);
     if(desc !== 0) return desc;
     return (aText < bText) ? -1 : Number(aText > bText)
   };
@@ -94,10 +97,11 @@ export const FilterProvider: FC<Props> = ({ buckets, children, searchEnabled }) 
         searchEnabled,
         searchList,
         searchResults,
-        updateAllBuckets,
-        setSearch,
         selectionType,
+        setIsDate,
+        setSearch,
         setSelectionType,
+        updateAllBuckets,
         updateSelected,
       }}
     >

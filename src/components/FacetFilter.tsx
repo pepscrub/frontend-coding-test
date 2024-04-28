@@ -1,3 +1,4 @@
+import { theme } from '@/theme'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ModifiedBucket, useFilter } from './FacetFilterController'
@@ -19,10 +20,11 @@ export function FacetFilter() {
 
 export function FacetFilterItem({ bucket }: { bucket: ModifiedBucket }) {
   const [checked, setChecked] = useState(bucket.checked);
-  const { updateSelected } = useFilter();
+  const { updateSelected, setIsDate } = useFilter();
   const { t } = useTranslation();
   const keyAsDate = new Date(bucket.original_key);
   const isDate = !isNaN(keyAsDate.getDate());
+  setIsDate(isDate);
 
   const label = isDate ? bucket?.key_as_string : t(bucket.key.replace('_', ' '));
 
@@ -41,7 +43,7 @@ export function FacetFilterItem({ bucket }: { bucket: ModifiedBucket }) {
       </span>
       <Flag countryCode={bucket.original_key} />
       <span className="flex-1">{label}</span>
-      <span className="justify-self-end">({bucket.doc_count})</span>
+      <span className="justify-self-end" style={{ color: theme.brand }}>({bucket.doc_count})</span>
     </label>
   )
 }
