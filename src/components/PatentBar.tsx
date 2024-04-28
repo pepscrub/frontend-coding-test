@@ -1,13 +1,14 @@
 import { PatentDocument } from "@/models/PatentDocument";
-import { removeDuplicates, toTitleCase } from "@/utils";
+import { removeDuplicates } from "@/utils";
 import { FC } from "react";
 import ReactCountryFlag from "react-country-flag";
+import { useTranslation } from "react-i18next";
 
 export const PatentBar: FC<{ patent: PatentDocument }> = ({ patent }) => {
+  const { t } = useTranslation();
   const { jurisdiction, doc_number, kind, publication_type, priority_claim, family } = patent;
   const jurisdictions = removeDuplicates(priority_claim.map(({ jurisdiction }) => jurisdiction));
   // Ideally this would be a translation
-  const titleCasedPublication = toTitleCase(publication_type);
   return (
     <div className={'flex flex-wrap'}>
       <div className={'mr-3 flex items-center'}>
@@ -16,11 +17,11 @@ export const PatentBar: FC<{ patent: PatentDocument }> = ({ patent }) => {
         <span className={'mx-0.5'}>{kind}</span>
       </div>
       <div className={'mr-3'}>
-        <span className={'font-semibold capitalize'}>{titleCasedPublication}</span>
+        <span className={'font-semibold capitalize'}>{t(`publication.${publication_type.toLocaleLowerCase()}.title`)}</span>
       </div>
       {/* Figure out what the family length means? */}
       <div className={'mr-3'}>
-        Family: {family.simple.size}
+        {t('family', { simple: family.simple.size, extended: family.simple.size })}
       </div>
       <div className={'mr-3'}>
         <span>Family Jurisdictions:</span>

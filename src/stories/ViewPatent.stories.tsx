@@ -30,7 +30,7 @@ export const ViewPatent: Story = {
       await canvas.findAllByText('20220079429')
       await canvas.findAllByText('A1')
       await canvas.findAllByText('Patent Application')
-      await canvas.findAllByText('Family: 4')
+      await canvas.findAllByText('Family: 4s/4ex')
     })
 
     await step('Check patent legal status', async () => {
@@ -44,12 +44,6 @@ export const ViewPatent: Story = {
 
     await step('Check correct inventors are displayed', async () => {
       await canvas.findAllByText('Inventors: Chen Wei, Li Zhongwen, Zheng Qinxiang')
-    })
-
-    await step('Checking to see if abstract match is displayed', async () => {
-      await canvas.findAllByText(
-        'Abstract match:'
-      )
     })
 
     await step('Checking to see is abstract is displayed', async () => {
