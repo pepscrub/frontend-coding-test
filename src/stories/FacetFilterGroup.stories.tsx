@@ -1,4 +1,4 @@
-import { FacetFilterGroup as Component } from '@/components/FacetFilterGroup'
+import { StoryBookFacetFilterGroup as Component } from '@/components/FacetFilterGroup'
 import { Meta, StoryObj } from '@storybook/react'
 
 import AGGREGATIONS from '../fixtures/patent-facets.json'
@@ -9,9 +9,23 @@ const meta: Meta<typeof Component> = {
   title: 'Components/FacetFilterGroup',
   component: Component,
   decorators: [],
+  argTypes: {
+    aggregationTarget: {
+      options: [
+        'inventor.name.exact',
+        'applicant.name.exact',
+        'jurisdiction',
+        'dates',
+        'publication_type',
+        'legal_status.patent_status',
+      ],
+      control: { type: 'select' }
+    }
+  },
   args: {
-    aggregation: AGGREGATIONS.aggregations['inventor.name.exact'],
-    label: 'Inventor'
+    aggregationTarget: 'jurisdiction',
+    label: 'Inventor',
+    aggregation: AGGREGATIONS.aggregations,
   }
 }
 

@@ -1,10 +1,17 @@
-import { useScholar } from '@/api';
+import { Aggregation } from '@/models/Aggregation';
 import { Bucket } from '@/models/Bucket';
+import { TermsAggregation } from '@/models/TermsAggregation';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { FC, PropsWithChildren, createContext, useContext, useState } from 'react';
 import { FacetFilter, FacetFilterGroupProps } from './FacetFilter';
 
 interface Props extends PropsWithChildren {}
+
+interface StoryBookFacetFilterGroupProps {
+  aggregationTarget: string;
+  aggregation: Record<string, Aggregation>;
+  label: string
+}
 
 interface Context {
   filteredList: Bucket[];
@@ -50,30 +57,8 @@ export const useFilter = (): Context => {
   return data;
 }
 
-export function FacetFilterGroup(props: FacetFilterGroupProps) {
-  return (
-    <QueryClientProvider client={new QueryClient}>
-      <FilterProvider>
-        <FacetFilterGroupModel {...props} />
-      </FilterProvider>
-    </QueryClientProvider>
-  )
-}
-
 export function FacetFilterGroupModel({ aggregation, label }: FacetFilterGroupProps) {
   const [show, setShow] = useState(true)
-  const { filteredList } = useFilter();
-  const filterKey = `${label.replace(/\s.*/, '').toLowerCase()}.must`;
-  const filter = encodeURI(filteredList.map(({ key }) => `${filterKey}=${key}`).join('&'));
-
-  const { data } = useScholar({
-      q: `aggregation.enabled:${show}${filter.length > 0 ? `&${filter}` : ''}`,
-      authorship: filterKey.includes('author') && !!filter.length,
-      inventorship: filterKey.includes('inventor') && !!filter.length
-    },
-    true,
-    1
-  );
   // TODO: useScholar with aggregation enabled:show
   return (
     <div className="ml-2 border">
@@ -84,3 +69,23 @@ export function FacetFilterGroupModel({ aggregation, label }: FacetFilterGroupPr
     </div>
   )
 }
+
+export function FacetFilterGroup(props: FacetFilterGroupProps) {
+  return (
+    <QueryClientProvider client={new QueryClient}>
+      <FilterProvider>
+        <FacetFilterGroupModel {...props} />
+      </FilterProvider>
+    </QueryClientProvider>
+  )
+}
+
+// Storybook specific function only adds aggregationTarget prop
+export function StoryBookFacetFilterGroup({ aggregation, aggregationTarget, ...props}: StoryBookFacetFilterGroupProps) {
+  return (
+    <FacetFilterGroup
+      aggregation={aggregation[aggregationTarget] as TermsAggregation}
+      {...props}
+    />
+  )
+} 
