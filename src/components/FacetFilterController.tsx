@@ -39,7 +39,11 @@ export const FilterProvider: FC<Props> = ({ buckets, children, searchEnabled }) 
   const [search, setSearch] = useState('');
   const [selectionType, setSelectionType] = useState(SELECTION_TYPE.all);
 
-  const translateBucket = useCallback(({ key, doc_count }: Bucket) => ({ key: t(key), original_key: key, doc_count, checked: false }), [t])
+  const translateBucket = useCallback(
+    ({ key, doc_count, key_as_string }: Bucket & { key_as_string?: string }) => (
+      { key: t(key), original_key: key, doc_count, checked: false, key_as_string }
+    ), [t]
+  )
   const sortBucket = (a: ModifiedBucket, b: ModifiedBucket) => {
     const desc = b.doc_count - a.doc_count;
     const aText = a.key.toLowerCase();

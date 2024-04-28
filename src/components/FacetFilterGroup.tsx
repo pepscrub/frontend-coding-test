@@ -38,6 +38,7 @@ export function FacetFilterGroupModel({ label, search: searchEnabled, searchText
     <div className="ml-2 border">
       {searchEnabled 
       && <Input
+        className={'mb-2'}
         type="search"
         onKeyUp={(e) => setSearch(e.currentTarget.value)}
         placeholder={`${searchText} ${label}`}
