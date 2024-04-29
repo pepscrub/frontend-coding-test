@@ -1,3 +1,4 @@
+import { gray, white } from 'tailwindcss/colors'
 import { PatentLegalStatus } from './models/PatentLegalStatus'
 
 const blue = '#0094d3'
@@ -62,4 +63,14 @@ export const scholarPillColors = {
   has_affiliation: orange,
   has_field_of_study: yellow,
   is_retracted: red
+}
+
+export const patentLegalColors = {
+  'ACTIVE': red,
+  'DISCONTINUED': gray[500],
+  'EXPIRED': blue,
+  'INACTIVE': white,
+  'PATENTED': green,
+  'PENDING': orange,
+  'UNKNOWN': purple,
 }

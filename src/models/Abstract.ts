@@ -1,4 +1,4 @@
-import { En } from './En'
+import { En } from './En';
 
 export interface Abstract {
   en: En[]

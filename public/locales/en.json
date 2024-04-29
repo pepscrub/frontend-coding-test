@@ -1,0 +1,29 @@
+{
+  "applicant_no": "Applicant No: {{count}}",
+  "family": "Family: {{simple}}s/{{extended}}ex",
+  "cited_works": "Citied Works",
+  "cited_by": "Cited By",
+  "cites_npl": "Cites NPL",
+  "Applicant_one": "Applicant",
+  "Applicant_other": "Applicants",
+  "Inventor_one": "Inventor",
+  "Inventor_other": "Inventors",
+  "legal": {
+    "status": {
+      "PENDING": "Pending",
+      "ACTIVE": "Active"
+    }
+  },
+  "publication": {
+    "patent_application": {
+      "title": "Patent Application"
+    },
+    "granted_application": {
+      "title": "Granted Patent"
+    }
+  },
+  "class": {
+    "CPC": "CPC Classification",
+    "IPC": "IPC Classification"
+  }
+}
