@@ -21,5 +21,9 @@
     "granted_application": {
       "title": "Granted Patent"
     }
+  },
+  "class": {
+    "CPC": "CPC Classification",
+    "IPC": "IPC Classification"
   }
 }

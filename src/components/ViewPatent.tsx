@@ -5,6 +5,7 @@ import { convertToHumanDate, toTitleCase } from '@/utils';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ApplicantAndInventorInfo } from './PatentApplicantInventor';
+import { PatentApplicationsAndClaims } from './PatentApplicationsAndClass';
 import { PatentBar } from './PatentBar';
 import { CitedInfo } from './PatentCited';
 import { PatentHistory } from './PatentHistory';
@@ -66,7 +67,9 @@ export function ViewPatent({ patent }: { patent: PatentDocument }) {
       <h1 className={'text-xl mb-2'}>{patent.title?.[LOCALE]?.at(0)?.text || ''}</h1>
       <PatentInfo patent={patent} />
       <div className='flex flex-column border-t border-neutral-300'>
-        <PatentPreview patent={patent} />
+        <PatentPreview patent={patent}>
+          <PatentApplicationsAndClaims patent={patent} />
+        </PatentPreview>
         <PatentImagePreview>
           <PatentHistory patent={patent} />
         </PatentImagePreview>
