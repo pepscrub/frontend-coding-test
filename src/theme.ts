@@ -1,4 +1,4 @@
-import { PatentLegalStatus } from './models/PatentLegalStatus'
+import { PatentLegalStatus } from './models/PatentLegalStatus';
 
 const blue = '#0094d3'
 const darkBlue = '#6278d8'
