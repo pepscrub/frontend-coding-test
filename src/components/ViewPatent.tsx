@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { ApplicantAndInventorInfo } from './PatentApplicantInventor';
 import { PatentBar } from './PatentBar';
 import { CitedInfo } from './PatentCited';
+import { PatentHistory } from './PatentHistory';
 import { PatentImagePreview } from './PatentImagePreview';
 import { PatentPills } from './PatentPills';
 import { PatentPreview } from './PatentText';
@@ -17,11 +18,13 @@ const PatentInfo: FC<{patent: PatentDocument}> = ({ patent }) => {
     legal_status: legal,
     doc_number,
     date_published,
+    application_reference,
     earliest_priority_claim_date,
   } = patent;
 
   // TODO: Extend to include dates not in demo JSON
   const displayDates = {
+    application: application_reference.date,
     published: date_published,
     earliest_priority: earliest_priority_claim_date,
   }
@@ -64,7 +67,9 @@ export function ViewPatent({ patent }: { patent: PatentDocument }) {
       <PatentInfo patent={patent} />
       <div className='flex flex-column border-t border-neutral-300'>
         <PatentPreview patent={patent} />
-        <PatentImagePreview />
+        <PatentImagePreview>
+          <PatentHistory patent={patent} />
+        </PatentImagePreview>
       </div>
     </div>
   )
