@@ -26,7 +26,7 @@ const meta: Meta<typeof Component> = {
   args: {
     aggregationTarget: 'jurisdiction',
     label: 'Jurisdiction',
-    search: false,
+    search: true,
     aggregation: AGGREGATIONS.aggregations,
   }
 }
